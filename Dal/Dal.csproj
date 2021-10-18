@@ -55,6 +55,7 @@
     <Compile Include="DaoProducto.cs" />
     <Compile Include="EntityDataModel.cs" />
     <Compile Include="IDao.cs" />
+    <Compile Include="IDaoProducto.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
   </ItemGroup>
   <ItemGroup>

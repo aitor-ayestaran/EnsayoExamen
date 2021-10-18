@@ -11,23 +11,41 @@ namespace WebApi.Controllers
 {
     public class ProductosController : ApiController
     {
-        private static readonly IDao<Producto> dao = DaoProducto.ObtenerDao();
+        private static readonly IDaoProducto dao = DaoProducto.ObtenerDao();
         // GET: api/Productos
         public IEnumerable<Producto> Get()
         {
             IEnumerable<Producto> productos = dao.ObtenerTodos();
-            foreach(var p in productos)
+            foreach (var p in productos)
             {
                 p.Categoria.Productos = null;
             }
             return productos;
         }
 
+        // GET: api/Productos/
+        [HttpGet]
+        [Route("api/productos/filtro")]
+        public IHttpActionResult Get(string nombre)
+        {
+            IEnumerable<Producto> productos = dao.ObtenerPorNombre(nombre);
+            foreach (var p in productos)
+            {
+                p.Categoria.Productos = null;
+            }
+            if(productos.Count() < 1)
+            {
+                return NotFound();
+            }
+            return Ok(productos);
+        }
+
+
         // GET: api/Productos/5
         public IHttpActionResult Get(long id)
         {
             Producto producto = dao.ObtenerPorId(id);
-            if(producto == null)
+            if (producto == null)
             {
                 return NotFound();
             }
@@ -35,7 +53,7 @@ namespace WebApi.Controllers
         }
 
         // POST: api/Productos
-        public IHttpActionResult Post([FromBody]Producto producto)
+        public IHttpActionResult Post([FromBody] Producto producto)
         {
             if (!ModelState.IsValid)
             {
@@ -46,7 +64,7 @@ namespace WebApi.Controllers
         }
 
         // PUT: api/Productos/5
-        public IHttpActionResult Put(long id, [FromBody]Producto producto)
+        public IHttpActionResult Put(long id, [FromBody] Producto producto)
         {
             if (!ModelState.IsValid)
             {
@@ -64,7 +82,7 @@ namespace WebApi.Controllers
         public IHttpActionResult Delete(long id)
         {
             Producto producto = dao.ObtenerPorId(id);
-            if(producto == null)
+            if (producto == null)
             {
                 return NotFound();
             }

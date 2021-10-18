@@ -7,7 +7,7 @@ using System.Threading.Tasks;
 
 namespace Dal
 {
-    public class DaoProducto : IDao<Producto>
+    public class DaoProducto : IDaoProducto
     {
         #region Singleton
         private DaoProducto() { }
@@ -70,5 +70,15 @@ namespace Dal
                 return db.Productos.Include("Categoria").ToList();
             }                
         }
+
+        public IEnumerable<Producto> ObtenerPorNombre(string nombre)
+        {
+            using (var db = new EntityDataModel())
+            {
+                return db.Productos.Include("Categoria").Where(p => p.Nombre.Contains(nombre)).ToList();
+            }
+        }
+
+     
     }
 }
